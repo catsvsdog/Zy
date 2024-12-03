@@ -22,6 +22,8 @@ class Item:
             Item.instances['bottom'].add(self)
         else:  # None
             Item.instances[None].add(self)
+    def getColor(self):
+        return self.color
 
     def __eq__(self, other):
         return isinstance(other, Item) and self.image == other.image and self.name == other.name and self.pos == other.pos and self.size == other.size and self.color == other.color and self.season == other.season and self.type == other.type and self.isTop == other.isTop and self.serialNum == other.serialNum
@@ -128,24 +130,24 @@ class Bottom(Item):
         else:
             return False
 types = {
-    "baggy": "tight",
+    "baggy": ["tight", "baggy"],
     "tight": "baggy",
-    "wellfit" : ["baggy", "tight"]
+    "well-fit" : ["baggy", "tight"]
 }
 
 colorsThatGoWith = {
     "red": ["black", "white", "blue", "beige", "gray"],
     "orange": ["white", "brown", "beige","blue", "lightGray", "black"],
-    "yellow": ["gray", "white", "navy", "beige"],
-    "green": ["brown", "white", "black", "beige", "lightGray"],
+    "yellow": ["gray", "white", "blue", "beige"],
+    "green": ["brown", "white", "black", "beige", "gray","lightGray"],
     "blue": ["white", "gray", "beige", "brown", "black"],
     "lightBlue": ["white", "beige", "gray", "black", "pink"],
     "purple": ["white", "black", "beige", "gray"],
-    "pink": ["white", "gray", "blue","navy", "lightBlue", "brown"],
+    "pink": ["white", "gray", "blue", "lightBlue", "brown"],
     "beige": ["brown", "white", "black", "pink"],
-    "white": ["black", "gray", "beige", "navy", "brown", "white"],
+    "white": ["black", "gray", "beige", "navy","lightBlue", "brown", "white"],
     "black": ["white", "gray", "beige","lightBlue", "blue", "red", "black"],
-    "gray": ["white", "black", "blue", "pink", "yellow"],
+    "gray": ["white", "black", "blue", "pink", "green", "yellow"],
     "brown": ["white", "beige", "blue", "green", "black"],
     "lightGray": ["white", "beige", "blue", "pink", "green"]
 }
@@ -163,6 +165,19 @@ class Outfit:
 
     def updatePref(self, other):
         self.userPrefColors.add(tuple(other))
+
+    def getColor(self):
+      """Returns the color of the outfit.
+
+        Prioritizes the top's color. If the top has no color, 
+        returns the bottom's color.
+      """
+      top_color = self.top.getColor()
+      bottom_color = self.bottom.getColor()
+      if top_color:
+        return top_color
+      else:
+        return bottom_color
     def isColorMatch(self):
         # try using top to match bottom first
         topColors = self.top.color
@@ -194,6 +209,7 @@ class Outfit:
         print('Info, No match find.')
         return False
     def isTypeMatch(self):
+        print("top type: ", self.top.type)
         return self.bottom.type in types[self.top.type]
 
 

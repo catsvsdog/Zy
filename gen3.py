@@ -5,28 +5,28 @@ from cmu_graphics import *
 import os
 
 
-types = {
-    "baggy": "tight",
-    "tight": "baggy",
-    "wellfit" : ["baggy", "tight"]
-}
+# types = {
+#     "baggy": "tight",
+#     "tight": "baggy",
+#     "wellfit" : ["baggy", "tight"]
+# }
 
-colorsThatGoWith = {
-    "red": ["black", "white", "blue", "beige", "gray"],
-    "orange": ["white", "brown", "beige","blue", "lightGray", "black"],
-    "yellow": ["gray", "white", "navy", "beige"],
-    "green": ["brown", "white", "black", "beige", "lightGray"],
-    "blue": ["white", "gray", "beige", "brown", "black"],
-    "lightBlue": ["white", "beige", "gray", "black", "pink"],
-    "purple": ["white", "black", "beige", "gray"],
-    "pink": ["white", "gray", "blue","navy", "lightBlue", "brown"],
-    "beige": ["brown", "white", "black", "pink"],
-    "white": ["black", "gray", "beige", "navy", "brown", "white"],
-    "black": ["white", "gray", "beige","lightBlue", "blue", "red", "black"],
-    "gray": ["white", "black", "blue", "pink", "yellow"],
-    "brown": ["white", "beige", "blue", "green", "black"],
-    "lightGray": ["white", "beige", "blue", "pink", "green"]
-}
+# colorsThatGoWith = {
+#     "red": ["black", "white", "blue", "beige", "gray"],
+#     "orange": ["white", "brown", "beige","blue", "lightGray", "black"],
+#     "yellow": ["gray", "white", "navy", "beige"],
+#     "green": ["brown", "white", "black", "beige", "lightGray"],
+#     "blue": ["white", "gray", "beige", "brown", "black"],
+#     "lightBlue": ["white", "beige", "gray", "black", "pink"],
+#     "purple": ["white", "black", "beige", "gray"],
+#     "pink": ["white", "gray", "blue","navy", "lightBlue", "brown"],
+#     "beige": ["brown", "white", "black", "pink"],
+#     "white": ["black", "gray", "beige", "navy", "brown", "white"],
+#     "black": ["white", "gray", "beige","lightBlue", "blue", "red", "black"],
+#     "gray": ["white", "black", "blue", "pink", "yellow"],
+#     "brown": ["white", "beige", "blue", "green", "black"],
+#     "lightGray": ["white", "beige", "blue", "pink", "green"]
+# }
 def drawButton(x, y, width, height, radius, fill='black', border=None, borderWidth=1):
     drawRect(x + radius, y, width - 2 * radius, height, fill=fill)
     drawRect(x, y + radius, width, height - 2 * radius, fill=fill)
@@ -94,10 +94,10 @@ def generateAllGoodOutfits(topList, bottomList):
   """
   if not topList:
     print('Error, top is empty, please add tops.')
-    sys.exit(0)
+    #sys.exit(0)
   if not bottomList:
     print('Error, bottom is empty, please add bottoms')
-    sys.exit(0) 
+    #sys.exit(0) 
   good_outfits = []
   for top in topList:
     for bottom in bottomList:
@@ -118,21 +118,16 @@ def onAppStart(app):
     top3 = Item(None, "Pacsun", None, 200, {"red"}, {"summer", "spring"}, "tight", 'top', "processed\\IMG_1473.png")
     top4 = Item(None, "bm", None, 200,  {"white"}, {"summer", "spring"}, "tight", 'top', "processed\\IMG_1470.png")
     top5 = Item(None, "long", None, 200, {"green"},{"summer"},"well-fit", "top", "processed\\8IMG_2113.png")
-    bot1 = Item(None, "chuu", None, 200, {"gray"}, {"summer", "fall"}, "baggy", 'bottom', "processed\\IMG_1475.png")
+    bot1 = Item(None, "chuu", None, 200, {"black"}, {"summer", "fall"}, "baggy", 'bottom', "processed\\IMG_1475.png")
     bot2 = Item(None, "jean", None, 200, {"lightBlue"}, {"summer"}, "well-fit", 'bottom', "processed\\IMG_1476.png")
     bot3 = Item(None, "vjean", None, 200, {"blue"}, {"summer"}, "baggy", "bottom", "processed\\6IMG_1477.png")
-    tops = [top1, top2, top3, top4, top5]
-    bottoms = [bot1, bot2, bot3]
-
 
     print('top list = ', Item.instances['top'])
     print('bottom list = ', Item.instances['bottom'])
     app.my_good_outfits = generateAllGoodOutfits(Item.instances['top'], Item.instances['bottom'])
 
     print('good outfits: ', app.my_good_outfits)
-    #outfits_size = len(app.my_good_outfits)
-    #loop_range = min(outfits_size, 4)
-    # now I have a list of color matched good outfits
+
 
     print('Testing display first 4 outfits')
 
@@ -170,41 +165,42 @@ def onAppStart(app):
     #mutedBeige = rgb(205, 210, 203)
     app.mutedBeige = rgb(222, 220, 211)
 
-  # Item.instances = [<itemObject.Item object at 0x000001FFAF42A1D0>, <itemObject.Item object at 0x000001FFAF335350>, <itemObject.Item object at 0x000001FFB0252B50>, <itemObject.Item object at 0x000001FFAFE8AC50>]
-def addUserPref(outfits, output):
-    for clothing in outfits:
-        print("abc:")
-        print(clothing.color)
-        output["colors"] = output.get("colors", set()) | clothing.color
-        clothing.updatePref(clothing.color)
-    print(output)
-    return output
-    
 
-def generate_season_data():
-  season_data = {
-    "Spring": (
+def generateSeasonData():
+  seasons = {
+    "spring": (
         ("Average Range", (45, 70)),
         ("Early Spring", (40, 60)),
         ("Late Spring", (55, 75))
     ),
-    "Summer": (
+    "summer": (
         ("Average Range", (70, 90)),
         ("Early Summer", (65, 85)),
         ("Peak Summer", (80, 100))
     ),
-    "Autumn": (
+    "autumn": (
         ("Average Range", (50, 70)),
         ("Early Autumn", (60, 80)),
         ("Late Autumn", (40, 60))
     ),
-    "Winter": (
+    "winter": (
         ("Average Range", (20, 50)),
         ("Mild Winter Regions", (30, 60)),
         ("Harsh Winter Regions", (-10, 30))
     )
   }
-  return season_data
+  return seasons
+
+def getSeasonFromTemp(temp):
+    data = generateSeasonData()
+    for season in data:  # Iterate through keys (seasons)
+        ranges = data[season]  # Access the range tuples for each season
+        for time, (low, high) in ranges:
+            if low >= temp and temp <= high:
+                return season   # Return the season when a match is found
+    
+    return "Invalid season"  # Return this if no range matches
+
 
 
 def pickOutfitOnUserPreference(outfits, user_preferences):
@@ -223,6 +219,7 @@ def pickOutfitOnUserPreference(outfits, user_preferences):
   for outfit in outfits: # iterate over each outfit and check color and type against it
     colors = outfit.getColor()
     for color in colors:
+      print("color in outfits: ", color)
       if color in user_preferences:
     #if outfit.getColor() in user_preferences:
         print('Found user preferred color match')
@@ -278,10 +275,16 @@ def pickAGoodOutfitRandomly(outfits):
     return None
   outfit = choice(outfits)
   return outfit
-
+import copy
 def recycleDisplayedOutfits(displayed, recycled):
-    while displayed != []:
-        recycled.append(displayed.pop(0))  # Remove and append the first item each time
+
+    print("displayed before clear:", displayed)
+    recycled.extend(copy.deepcopy(displayed))  # Add deep copies to recycled
+    print("recycled:", recycled)
+    displayed.clear()  # Clear the original list
+
+    # while displayed != []:
+    #     recycled.append(displayed.pop(0))  # Remove and append the first item each time
 
     # print("displayed: ", displayed)
 
@@ -311,10 +314,7 @@ def get4Outfits(outfits, displayed_outfits):
     if not outfit:
         print('Warning: outfit is empty')
         return
-    # display 1 outfit
-    #outfit.display(
-    
-    # remove outfit from good outfit list
+
     outfits.remove(outfit)
     # add displayed outfit into display outfit list
     displayed_outfits.append(outfit)
@@ -324,34 +324,58 @@ def get4Outfits(outfits, displayed_outfits):
 def gen_redrawAll(app):
     drawLabel("Generate Outfit!", 30, 50, size = 30, fill = app.gray, font = "Lora", align = "left")
     drawLine(20, 70 , 270 , 70, fill = app.gray, lineWidth = 2)
-    for i, clothing in enumerate(app.displayed_outfits):
-        row = i // app.numCols  
-        col = i % app.numCols
+    if app.displayed_outfits == []:
+        print("naurr")
+        clothing = app.recycled[-1]
         itemWidth = 180 + 45
-        itemHeight = clothing.getSize()
+        itemHeight = 200
         #print("item hieght: ", itemHeight)
-        x = (col * app.itemSize[0]) + itemWidth / 2
-        y = row * itemHeight + 200 - app.scrollOffset
+        x = (0 * app.itemSize[0]) + itemWidth / 2
+        y = 0 * itemHeight + 200 - app.scrollOffset
         print("serialnum: ", clothing.top.serialNum)
         # imageTop = clothing.top.serialNum
         # # if clothing.isTop == "bottom":
         # imageBot = clothing.bottom.serialNum
         drawImage(clothing.top.serialNum, x, y, align="center", width=clothing.getSize(), height=clothing.getSize())
-        bottom = y + clothing.getSize() + 20
+        bottom = y + 200 + 20
         drawImage(clothing.bottom.serialNum, x, bottom, align="center", width=clothing.getSize(), height=clothing.getSize())
-        
-        # Draw the "add to outfits" button
+        drawButton(650, 503, 155, 50, 10, fill=app.lightg)
+        drawButton(650, 500, 150, 50, 10, fill=app.bgCol)
+        drawLabel("reset", 700, 525, size = 17, bold = True, fill = "white", font = "Lora")
         drawButton(x - 75, 523, 155, 50, 10, fill=app.lightg)
         drawButton(x - 75, 520, 150, 50, 10, fill=app.bgCol)
         clothing.pos = (x, 550)
         #print("clothing position: ", clothing.pos)
         drawLabel("add to outfits", x, 545, size=18, fill = "white" ,font="Lora", bold = True)
-    #         # Remove the displayed outfit from the good outfits list and add it to the displayed outfits
-    #         app.my_good_outfits.remove(outfit)
-    #         app.displayed_outfits.append(outfit)
+    else:
+        for i, clothing in enumerate(app.displayed_outfits):
+            row = i // app.numCols  
+            col = i % app.numCols
+            itemWidth = 180 + 45
+            itemHeight = 200
+            #print("item hieght: ", itemHeight)
+            x = (col * app.itemSize[0]) + itemWidth / 2
+            y = row * itemHeight + 200 - app.scrollOffset
+            print("serialnum: ", clothing.top.serialNum)
+            # imageTop = clothing.top.serialNum
+            # # if clothing.isTop == "bottom":
+            # imageBot = clothing.bottom.serialNum
+            drawImage(clothing.top.serialNum, x, y, align="center", width=clothing.getSize(), height=clothing.getSize())
+            bottom = y + clothing.getSize() + 20
+            drawImage(clothing.bottom.serialNum, x, bottom, align="center", width=clothing.getSize(), height=clothing.getSize())
+            
+            # Draw the "add to outfits" button
+            drawButton(x - 75, 523, 155, 50, 10, fill=app.lightg)
+            drawButton(x - 75, 520, 150, 50, 10, fill=app.bgCol)
+            clothing.pos = (x, 550)
+            #print("clothing position: ", clothing.pos)
+            drawLabel("add to outfits", x, 545, size=18, fill = "white" ,font="Lora", bold = True)
+        #         # Remove the displayed outfit from the good outfits list and add it to the displayed outfits
+        #         app.my_good_outfits.remove(outfit)
+        #         app.displayed_outfits.append(outfit)
 
-    #     # Print the final status of Item instances for debugging
-    #     print(Item.instances)
+        #     # Print the final status of Item instances for debugging
+        #     print(Item.instances)
 
     # Draw the "regenerate" button at the end
     drawButton(650, 603-20, 155, 50, 10, fill = app.lightg)
@@ -392,6 +416,20 @@ def gen_onMousePress(app, mouseX, mouseY):
             break  # Stop checking after finding the clicked button
     if  app.saved_outfits != []:
         app.userPrefMode = True
+    if (mouseX >= 650 and mouseX <= 800) and (mouseY >= 500 and mouseY <= 550):
+        print("Reset")
+        app.my_good_outfits = generateAllGoodOutfits(Item.instances['top'], Item.instances['bottom'])
+
+        print('good outfits: ', app.my_good_outfits)
+        app.displayed_outfits = []
+
+        print('size of good outfits = ', len(app.my_good_outfits))
+        print('Testing display first 4 outfits')
+
+        get4Outfits(app.my_good_outfits, app.displayed_outfits)
+        print("displayed outfits: ", app.displayed_outfits)
+        print('size of good outfits after displayed = ', len(app.my_good_outfits))
+        app.recycled = []
 
     if (mouseX >= 675 and mouseX <= 825) and (mouseY >= 575 and mouseY <= 625):
         print("regenerated")
@@ -399,13 +437,26 @@ def gen_onMousePress(app, mouseX, mouseY):
         recycleDisplayedOutfits(app.displayed_outfits, app.recycled)
         print("recycled: ", app.recycled)
         print("check length: ", len(app.displayed_outfits))
-        get4Outfits(app.my_good_outfits, app.displayed_outfits)
+        #get4Outfits(app.my_good_outfits, app.displayed_outfits)
         if app.userPrefMode:
-            get4UserPreferredOutfits(app.my_good_outfits, app.displayed_outfits, app.saved_outfits)
-            # for outfit in app.displayed_outfits:
-            #     if outfit in app.recycled:
-            #         app.displayed_outfits.remove(outfit)
+            for outfit in app.saved_outfits:
+               app.userPrefColors.append(outfit.getColor())
+            print("color, " , app.userPrefColors)
+            get4UserPreferredOutfits(app.displayed_outfits, app.saved_outfits, app.userPrefColors)
+            for outfit in app.displayed_outfits:
+                if outfit in app.recycled:
+                    app.displayed_outfits.remove(outfit)
             print("to be displayed next: ", app.displayed_outfits)
+
+        elif len(app.displayed_outfits) <= 1:
+            print("Thats the best outfit! Press regenerate to restart!")
+            # app.displayed_outfits = []
+            get4Outfits(app.my_good_outfits, app.displayed_outfits)
+        elif len(app.displayed_outfits) == []:
+           app.displayed_outfits = app.recycled[-1]
+        else:
+           get4Outfits(app.my_good_outfits, app.displayed_outfits)
+        print("good outfits: ", app.my_good_outfits)
     if (mouseX >= 620 and mouseX <= 775) and (mouseY >= 30 and mouseY <= 80):
        #if app.saved_outfits != []:
         print("changing screens")
